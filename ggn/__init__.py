@@ -1,4 +1,11 @@
 import sys
+import asyncio
+
+try:
+    asyncio.get_event_loop()
+except RuntimeError:
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
 from pyrogram import Client
 from telethon.sync import TelegramClient
 from config import API_ID, API_HASH, BOT_TOKEN, DEFAULT_SESSION
@@ -50,6 +57,10 @@ def start_telethon_client(name, api_id, api_hash, bot_token=None):
 
 # Function to start the defaultbot using session string
 def start_defaultbot(session_string, api_id, api_hash):
+    if not session_string:
+        print("DEFAULT_SESSION is not set; skipping defaultbot session client.")
+        return None
+
     try:
         client = Client(
             "defaultbot",

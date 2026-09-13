@@ -3,11 +3,24 @@
 
 from os import getenv
 
-API_ID = int(getenv("API_ID", ""))
-API_HASH = getenv("API_HASH", "")
-BOT_TOKEN = getenv("BOT_TOKEN", "")
-OWNER_ID = int(getenv("OWNER_ID", ""))
-MONGODB_CONNECTION_STRING = getenv("MONGO_DB", "")
-LOG_GROUP = int(getenv("LOG_GROUP", ""))
-FORCESUB = getenv("FORCESUB", "")
-DEFAULT_SESSION = getenv("DEFAULT_SESSION", "") # this is jkust to help if you dont want to force your bot user to login or if they not interested
+
+def _require_env(name, cast=None):
+    value = getenv(name)
+    if value is None or value == "":
+        raise RuntimeError(f"Missing required environment variable: {name}")
+    if cast is None:
+        return value
+    try:
+        return cast(value)
+    except Exception as exc:
+        raise RuntimeError(f"Invalid environment variable value for {name}: {value!r}") from exc
+
+
+API_ID = _require_env("API_ID", int)
+API_HASH = _require_env("API_HASH")
+BOT_TOKEN = _require_env("BOT_TOKEN")
+OWNER_ID = _require_env("OWNER_ID", int)
+MONGODB_CONNECTION_STRING = _require_env("MONGO_DB")
+LOG_GROUP = _require_env("LOG_GROUP", int)
+FORCESUB = _require_env("FORCESUB")
+DEFAULT_SESSION = getenv("DEFAULT_SESSION", "")
