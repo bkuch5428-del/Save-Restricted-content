@@ -3,12 +3,18 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def welcome():
     # Render the welcome page with animated "Team SPY" text
     return render_template("welcome.html")
 
+
+@app.route("/health")
+def health():
+    return {"status": "ok"}, 200
+
+
 if __name__ == "__main__":
-    # Default to port 5000 if PORT is not set in the environment
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", "10000"))
     app.run(host="0.0.0.0", port=port)
