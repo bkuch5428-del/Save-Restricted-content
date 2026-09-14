@@ -1,6 +1,8 @@
 # Github / devgagnin
 
 import logging
+import os
+import threading
 import time
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -11,11 +13,21 @@ logging.getLogger("telethon").setLevel(logging.WARNING)
 botStartTime = time.time()
 
 if __name__ == "__main__":
-    from . import bot
     import glob
     from pathlib import Path
+
+    from app import app
     from ggn.importer import load_plugins
-    
+
+    port = int(os.environ.get("PORT", 10000))
+
+    def start_health_server():
+        app.run(host="0.0.0.0", port=port, use_reloader=False, threaded=True)
+
+    threading.Thread(target=start_health_server, daemon=True).start()
+
+    from . import bot
+
     path = "ggn/assets/*.py"
     files = glob.glob(path)
     for name in files:

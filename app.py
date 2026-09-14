@@ -47,6 +47,11 @@ def home():
     """
 
 
+@app.route('/health')
+def health():
+    return {"status": "ok"}, 200
+
+
 @app.route('/healthz')
 def healthz():
     return {"status": "ok"}, 200
@@ -54,4 +59,4 @@ def healthz():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, use_reloader=False, threaded=True)
