@@ -1,7 +1,15 @@
-FROM python:3.10.4-slim
+FROM python:3.10-bookworm
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git curl python3-pip ffmpeg wget bash neofetch software-properties-common \
+    git \
+    curl \
+    python3-pip \
+    ffmpeg \
+    wget \
+    bash \
+    neofetch \
+    software-properties-common \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
